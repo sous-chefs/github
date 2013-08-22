@@ -27,6 +27,9 @@ module GithubCB
       @host                = options[:host] ||= DEFAULT_HOST
     end
 
+    # @option options [String] :user
+    # @option options [String] :token
+    # @option options [Boolean] :force
     def download(options = {})
       if options[:force]
         FileUtils.rm_rf(local_archive_path)
@@ -35,7 +38,7 @@ module GithubCB
       FileUtils.mkdir_p(File.dirname(local_archive_path))
       file = ::File.open(local_archive_path, "wb")
 
-      open(download_uri, http_basic_authentication: [options[:user], options[:password]]) do |source|
+      open(download_uri, http_basic_authentication: [options[:user], options[:token]]) do |source|
         IO.copy_stream(source, file)
       end
     rescue OpenURI::HTTPError => ex
@@ -53,6 +56,10 @@ module GithubCB
       File.exist?(local_archive_path)
     end
 
+    # @param [String] target
+    #
+    # @option options [String] :owner
+    # @option options [String] :group
     def extract(target, options = {})
       require 'archive'
 

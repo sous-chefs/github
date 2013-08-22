@@ -10,8 +10,8 @@ default_action :deploy
 
 attribute :repo, kind_of: String, name_attribute: true, required: true
 attribute :version, kind_of: String, required: true
-attribute :user, kind_of: String
-attribute :password, kind_of: String
+attribute :github_user, kind_of: String
+attribute :github_token, kind_of: String
 attribute :host, kind_of: String
 attribute :path, kind_of: String, required: true
 attribute :owner, kind_of: String

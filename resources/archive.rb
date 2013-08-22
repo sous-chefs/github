@@ -10,8 +10,8 @@ default_action :extract
 
 attribute :repo, kind_of: String, name_attribute: true, required: true
 attribute :version, kind_of: String, default: "master"
-attribute :user, kind_of: String
-attribute :password, kind_of: String
+attribute :github_user, kind_of: String
+attribute :github_token, kind_of: String
 attribute :host, kind_of: String
 attribute :owner, kind_of: String
 attribute :group, kind_of: String

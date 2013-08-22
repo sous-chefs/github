@@ -27,13 +27,13 @@ action :deploy do
   end
 
   github_archive new_resource.repo do
-    version    new_resource.version
-    user       new_resource.user
-    password   new_resource.password
-    host       new_resource.host
-    extract_to new_resource.deploy_path
-    force      new_resource.force
-    action     :extract
+    version      new_resource.version
+    github_user  new_resource.github_user
+    github_token new_resource.github_token
+    host         new_resource.host
+    extract_to   new_resource.deploy_path
+    force        new_resource.force
+    action       :extract
   end
 
   ruby_block "before-migrate" do
