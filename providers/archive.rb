@@ -1,0 +1,50 @@
+#
+# Cookbook Name:: github
+# Provider:: archive
+#
+# Author:: Jamie Winsor (<jamie@vialstudios.com>)
+#
+
+use_inline_resources
+
+attr_reader :archive
+
+def load_current_resource
+  @archive = GithubCB::Archive.new(new_resource.repo, version: new_resource.version, host: new_resource.host)
+end
+
+action :extract do
+  package "libarchive12" do
+    action :nothing
+  end.run_action(:install)
+
+  package "libarchive-dev" do
+    action :nothing
+  end.run_action(:install)
+
+  chef_gem "libarchive-ruby"
+
+  unless archive.downloaded?
+    Chef::Log.info "github_archive[#{new_resource.name}] downloading archive"
+    archive.download(user: new_resource.user, password: new_resource.password, force: new_resource.force)
+    new_resource.updated_by_last_action(true)
+  end
+
+  unless ::File.exist?(new_resource.extract_to)
+    Chef::Log.info "github_archive[#{new_resource.name}] extracting archive to #{new_resource.extract_to}"
+    archive.extract(new_resource.extract_to, force: new_resource.force,
+      owner: new_resource.owner, group: new_resource.group)
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :delete do
+  file new_resource.path do
+    action :delete
+  end
+
+  directory new_resource.extract_to do
+    recursive true
+    action :delete
+  end
+end
