@@ -24,14 +24,14 @@ action :extract do
 
   chef_gem "libarchive-ruby"
 
-  unless archive.downloaded?
+  unless !new_resource.force || archive.downloaded?
     Chef::Log.info "github_archive[#{new_resource.name}] downloading archive"
     archive.download(user: new_resource.github_user, token: new_resource.github_token,
       force: new_resource.force)
     new_resource.updated_by_last_action(true)
   end
 
-  unless ::File.exist?(new_resource.extract_to)
+  unless !new_resource.force || ::File.exist?(new_resource.extract_to)
     Chef::Log.info "github_archive[#{new_resource.name}] extracting archive to #{new_resource.extract_to}"
     archive.extract(new_resource.extract_to, force: new_resource.force,
       owner: new_resource.owner, group: new_resource.group)
@@ -40,7 +40,7 @@ action :extract do
 end
 
 action :delete do
-  file new_resource.path do
+  file @archive.path do
     action :delete
   end
 

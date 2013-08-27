@@ -33,7 +33,21 @@ action :deploy do
     host         new_resource.host
     extract_to   new_resource.deploy_path
     force        new_resource.force
-    action       :extract
+
+    if new_resource.force
+      action [ :delete, :extract ]
+    else
+      action :extract
+    end
+  end
+
+  ruby_block "configure" do
+    block do
+      if new_resource.configure
+        Chef::Log.info "github_deploy[#{new_resource.name}] Running configure proc"
+        recipe_eval(&new_resource.configure.to_proc)
+      end
+    end
   end
 
   ruby_block "before-migrate" do

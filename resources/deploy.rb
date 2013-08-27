@@ -19,12 +19,19 @@ attribute :group, kind_of: String
 attribute :shared_directories, kind_of: Array, default: [ "pids", "log" ]
 attribute :force, kind_of: [TrueClass, FalseClass], default: false
 
+attribute :configure, kind_of: Proc
 attribute :before_migrate, kind_of: Proc
 attribute :after_migrate, kind_of: Proc
 attribute :migrate, kind_of: Proc
 
 def deploy_path
   ::File.join(release_path, version)
+end
+
+alias_method :_force, :force
+
+def force
+  version == "master" || _force
 end
 
 def release_path

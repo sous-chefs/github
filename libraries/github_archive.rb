@@ -81,14 +81,15 @@ module GithubCB
       end
     end
 
+    def local_archive_path
+      File.join(archive_cache_path, "#{repo}-#{version}.tar.gz")
+    end
+    alias_method :path, :local_archive_path
+
     private
 
       def archive_cache_path
         File.join(Chef::Config[:file_cache_path], "github_deploy", "archives")
-      end
-
-      def local_archive_path
-        File.join(archive_cache_path, "#{repo}-#{version}.tar.gz")
       end
 
       def download_uri
