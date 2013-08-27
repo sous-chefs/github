@@ -28,12 +28,6 @@ def deploy_path
   ::File.join(release_path, version)
 end
 
-alias_method :_force, :force
-
-def force
-  version == "master" || _force
-end
-
 def release_path
   ::File.join(path, "releases")
 end

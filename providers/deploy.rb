@@ -27,14 +27,16 @@ action :deploy do
   end
 
   github_archive new_resource.repo do
+    @should_force = new_resource.version == "master" || new_resource.force
+
     version      new_resource.version
     github_user  new_resource.github_user
     github_token new_resource.github_token
     host         new_resource.host
     extract_to   new_resource.deploy_path
-    force        new_resource.force
+    force        @should_force
 
-    if new_resource.force
+    if @should_force
       action [ :delete, :extract ]
     else
       action :extract
