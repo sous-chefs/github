@@ -77,7 +77,7 @@ module GithubCB
       uri = URI(asset_url(options))
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         req                  = Net::HTTP::Get.new(uri.to_s)
-        req['Authorization'] = "token #{options[:token]}"
+        req['Authorization'] = "token #{options[:token]}" unless options[:token].nil?
         req['Accept']        = "application/octet-stream"
 
         http.request(req)
