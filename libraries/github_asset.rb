@@ -74,8 +74,11 @@ module GithubCB
 
       return false if downloaded?(options[:path])
 
+      proxy_uri = ENV['https_proxy'] ? URI.parse(ENV['https_proxy']) : URI('')
+      proxy_uri = URI.parse(ENV['HTTPS_PROXY']) if ENV['HTTPS_PROXY']
+      p_user, p_pass = proxy_uri.userinfo.split(/:/) if proxy_uri.userinfo
       uri = URI(asset_url(options))
-      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      res = Net::HTTP::Proxy(proxy_uri.host, proxy_uri.port, p_user, p_pass).start(uri.hostname, uri.port, use_ssl: true) do |http|
         req                  = Net::HTTP::Get.new(uri.to_s)
         req['Authorization'] = "token #{options[:token]}" unless options[:token].nil?
         req['Accept']        = "application/octet-stream"
