@@ -12,6 +12,12 @@ require_relative 'github_errors'
 
 module GithubCB
   class Archive
+    class << self
+      def default_host
+        @default_host ||= "https://github.com"
+      end
+    end
+
     attr_reader :fqrn
     attr_reader :organization
     attr_reader :repo
@@ -22,7 +28,7 @@ module GithubCB
       @fqrn                = fqrn
       @organization, @repo = fqrn.split('/')
       @version             = options[:version] ||= "master"
-      @host                = options[:host] ||= "https://github.com"
+      @host                = options[:host] ||= default_host
     end
 
     # @option options [String] :user

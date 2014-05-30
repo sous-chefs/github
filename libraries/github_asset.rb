@@ -21,6 +21,10 @@ module GithubCB
       def asset_path(fqrn, tag, name)
         ::File.join(asset_cache, fqrn, tag, name)
       end
+
+      def default_host
+        @default_host ||= "https://github.com"
+      end
     end
 
     attr_reader :fqrn
@@ -35,7 +39,7 @@ module GithubCB
       @organization, @repo = fqrn.split('/')
       @tag_name            = options[:release]
       @name                = options[:name]
-      @host                = options[:host] ||= "https://github.com"
+      @host                = options[:host] ||= default_host
     end
 
     def asset_url(options)
