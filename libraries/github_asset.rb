@@ -23,8 +23,6 @@ module GithubCB
       end
     end
 
-    DEFAULT_HOST = "https://github.com".freeze
-
     attr_reader :fqrn
     attr_reader :organization
     attr_reader :repo
@@ -37,7 +35,7 @@ module GithubCB
       @organization, @repo = fqrn.split('/')
       @tag_name            = options[:release]
       @name                = options[:name]
-      @host                = options[:host] ||= DEFAULT_HOST
+      @host                = options[:host] ||= "https://github.com"
     end
 
     def asset_url(options)
