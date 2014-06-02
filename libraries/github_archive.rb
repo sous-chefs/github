@@ -12,7 +12,11 @@ require_relative 'github_errors'
 
 module GithubCB
   class Archive
-    DEFAULT_HOST = "https://github.com".freeze
+    class << self
+      def default_host
+        @default_host ||= "https://github.com"
+      end
+    end
 
     attr_reader :fqrn
     attr_reader :organization
@@ -24,7 +28,7 @@ module GithubCB
       @fqrn                = fqrn
       @organization, @repo = fqrn.split('/')
       @version             = options[:version] ||= "master"
-      @host                = options[:host] ||= DEFAULT_HOST
+      @host                = options[:host] ||= self.class.default_host
     end
 
     # @option options [String] :user
