@@ -28,7 +28,7 @@ module GithubCB
       @fqrn                = fqrn
       @organization, @repo = fqrn.split('/')
       @version             = options[:version] ||= "master"
-      @host                = options[:host] ||= default_host
+      @host                = options[:host] ||= self.class.default_host
     end
 
     # @option options [String] :user

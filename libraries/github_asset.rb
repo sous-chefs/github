@@ -39,7 +39,7 @@ module GithubCB
       @organization, @repo = fqrn.split('/')
       @tag_name            = options[:release]
       @name                = options[:name]
-      @host                = options[:host] ||= default_host
+      @host                = options[:host] ||= self.class.default_host
     end
 
     def asset_url(options)
