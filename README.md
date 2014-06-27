@@ -24,6 +24,10 @@ Downloads an asset from a Github release
 - **group** - group of the downloaded asset on disk
 - **force** - force downloading even if the asset already exists on disk
 
+## HTTP proxy support
+
+Ensure the `HTTPS_PROXY` environment variable is set for the shell executing `chef-client` or `chef-solo`. The value should be a fully qualified URL containing the host, port, username, and password for your proxy.
+
 # Author
 
 Author:: Jamie Winsor (<jamie@vialstudios.com>)
