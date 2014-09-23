@@ -3,49 +3,41 @@
 # Provider:: archive
 #
 # Author:: Jamie Winsor (<jamie@vialstudios.com>)
+# Contributor:: John Manero (<john_manero@rapid7.com>)
 #
 
 use_inline_resources
 
-attr_reader :archive
+action :download do
+  chef_gem 'octokit'
+  new_resource.authenticate
 
-def load_current_resource
-  @archive = GithubCB::Archive.new(new_resource.repo, version: new_resource.version, host: new_resource.host)
+  Chef::Log.info "Download github_archive[#{ new_resource.name }] version "\
+    "#{ new_resource.version }"
+
+  if !new_resource.downloaded? || new_resource.force
+    Chef::Log.info("github_archive[#{ new_resource.name }] "\
+      "downloading archive")
+
+    new_resource.download
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :extract do
-  package "libarchive12" do
-    action :nothing
-  end.run_action(:install)
+  Chef::Log.info "Extracting github_archive[#{ new_resource.name }]"
 
-  package "libarchive-dev" do
-    action :nothing
-  end.run_action(:install)
+  if !new_resource.extracted? || new_resource.force
+    Chef::Log.info("github_archive[#{ new_resource.name }] "\
+      "extracting archive")
 
-  chef_gem "libarchive-ruby"
-
-  unless !new_resource.force || archive.downloaded?
-    Chef::Log.info "github_archive[#{new_resource.name}] downloading archive"
-    archive.download(user: new_resource.github_user, token: new_resource.github_token,
-      force: new_resource.force)
-    new_resource.updated_by_last_action(true)
-  end
-
-  unless !new_resource.force || ::File.exist?(new_resource.extract_to)
-    Chef::Log.info "github_archive[#{new_resource.name}] extracting archive to #{new_resource.extract_to}"
-    archive.extract(new_resource.extract_to, force: new_resource.force,
-      owner: new_resource.owner, group: new_resource.group)
+    new_resource.extract
     new_resource.updated_by_last_action(true)
   end
 end
 
 action :delete do
-  file @archive.path do
-    action :delete
-  end
-
-  directory new_resource.extract_to do
-    recursive true
+  file new_resource.asset_path do
     action :delete
   end
 end
