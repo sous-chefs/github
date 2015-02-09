@@ -14,13 +14,9 @@ def load_current_resource
 end
 
 action :extract do
-  package "libarchive12" do
-    action :nothing
-  end.run_action(:install)
-
-  package "libarchive-dev" do
-    action :nothing
-  end.run_action(:install)
+  recipe_eval do
+    run_context.include_recipe "libarchive"
+  end
 
   chef_gem "libarchive-ruby"
 
