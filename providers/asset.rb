@@ -17,10 +17,12 @@ end
 action :download do
   if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
     chef_gem "octokit" do
-      compile_time false
+      compile_time true
     end
   else
-    chef_gem "octokit"
+    chef_gem "octokit" do
+      action :nothing
+    end.run_action(:install)
   end
 
   Chef::Log.info "github_asset[#{new_resource.name}] downloading asset"
