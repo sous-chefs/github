@@ -15,7 +15,13 @@ def load_current_resource
 end
 
 action :download do
-  chef_gem "octokit"
+  if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
+    chef_gem "octokit" do
+      compile_time false
+    end
+  else
+    chef_gem "octokit"
+  end
 
   Chef::Log.info "github_asset[#{new_resource.name}] downloading asset"
   updated = asset.download(user: new_resource.github_user, token: new_resource.github_token,

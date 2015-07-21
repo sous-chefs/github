@@ -18,7 +18,13 @@ action :extract do
     run_context.include_recipe "libarchive"
   end
 
-  chef_gem "libarchive-ruby"
+  if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
+    chef_gem "libarchive-ruby" do
+      compile_time false
+    end
+  else
+    chef_gem "libarchive-ruby"
+  end
 
   unless !new_resource.force || archive.downloaded?
     Chef::Log.info "github_archive[#{new_resource.name}] downloading archive"
