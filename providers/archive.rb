@@ -15,15 +15,7 @@ end
 
 action :extract do
   recipe_eval do
-    run_context.include_recipe "libarchive"
-  end
-
-  if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
-    chef_gem "libarchive-ruby" do
-      compile_time false
-    end
-  else
-    chef_gem "libarchive-ruby"
+    run_context.include_recipe "libarchive::default"
   end
 
   unless !new_resource.force || archive.downloaded?
