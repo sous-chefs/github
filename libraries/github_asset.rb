@@ -50,16 +50,12 @@ module GithubCB
         c.access_token = options[:token]
       end
 
-      release = Octokit.releases(fqrn).find do |release|
-        release.tag_name == tag_name
-      end
-
+      release = Octokit.release_for_tag(fqrn, tag_name)
       raise GithubCB::ReleaseNotFound, "release not found" if release.nil?
 
-      asset = release.rels[:assets].get.data.find do |asset|
+      asset = release[:assets].find do |asset|
         asset.name == name
       end
-
       raise GithubCB::AssetNotFound, "asset not found" if asset.nil?
 
       asset.rels[:self].href
