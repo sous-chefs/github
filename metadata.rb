@@ -8,4 +8,4 @@ version          "0.3.2"
 
 supports "ubuntu"
 
-depends "libarchive"
+depends "libarchive", "~> 0.4.1"
