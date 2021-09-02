@@ -1,12 +1,3 @@
-#
-# Cookbook Name:: github
-# Provider:: asset
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
-use_inline_resources
-
 attr_reader :asset
 
 def load_current_resource
@@ -15,14 +6,8 @@ def load_current_resource
 end
 
 action :download do
-  if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
-    chef_gem "octokit" do
-      compile_time true
-    end
-  else
-    chef_gem "octokit" do
-      action :nothing
-    end.run_action(:install)
+  chef_gem 'octokit' do
+    compile_time true
   end
 
   Chef::Log.info "github_asset[#{new_resource.name}] downloading asset"

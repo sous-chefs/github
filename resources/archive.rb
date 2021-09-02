@@ -1,15 +1,9 @@
-#
-# Cookbook Name:: github
-# Resource:: archive
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
+unified_mode false
 actions :extract, :delete
 default_action :extract
 
-attribute :repo, kind_of: String, name_attribute: true, required: true
-attribute :version, kind_of: String, default: "master"
+attribute :repo, kind_of: String, name_attribute: true
+attribute :version, kind_of: String, default: 'master'
 attribute :github_user, kind_of: String
 attribute :github_token, kind_of: String
 attribute :host, kind_of: String
