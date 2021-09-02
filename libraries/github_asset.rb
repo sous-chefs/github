@@ -1,10 +1,3 @@
-#
-# Cookbook Name:: github
-# Library:: github_asset
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
 require 'net/http'
 require 'open-uri'
 require 'uri'
@@ -15,7 +8,7 @@ module GithubCB
   class Asset
     class << self
       def asset_cache
-        ::File.join(Chef::Config[:file_cache_path], "github_assets")
+        ::File.join(Chef::Config[:file_cache_path], 'github_assets')
       end
 
       def asset_path(fqrn, tag, name)
@@ -23,7 +16,7 @@ module GithubCB
       end
 
       def default_host
-        @default_host ||= "https://github.com"
+        @default_host ||= 'https://github.com'
       end
     end
 
@@ -50,17 +43,17 @@ module GithubCB
         c.access_token = options[:token]
       end
 
-      release = Octokit.releases(fqrn).find do |release|
-        release.tag_name == tag_name
+      release = Octokit.releases(fqrn).find do |r|
+        r.tag_name == tag_name
       end
 
-      raise GithubCB::ReleaseNotFound, "release not found" if release.nil?
+      raise GithubCB::ReleaseNotFound, 'release not found' if release.nil?
 
-      asset = release.rels[:assets].get.data.find do |asset|
-        asset.name == name
+      asset = release.rels[:assets].get.data.find do |a|
+        a.name == name
       end
 
-      raise GithubCB::AssetNotFound, "asset not found" if asset.nil?
+      raise GithubCB::AssetNotFound, 'asset not found' if asset.nil?
 
       asset.rels[:self].href
     end
@@ -83,13 +76,13 @@ module GithubCB
       res = Net::HTTP::Proxy(proxy_uri.host, proxy_uri.port, p_user, p_pass).start(uri.hostname, uri.port, use_ssl: true) do |http|
         req                  = Net::HTTP::Get.new(uri.to_s)
         req['Authorization'] = "token #{options[:token]}" unless options[:token].nil?
-        req['Accept']        = "application/octet-stream"
+        req['Accept']        = 'application/octet-stream'
 
         http.request(req)
       end
 
       FileUtils.mkdir_p(::File.dirname(options[:path]))
-      file = ::File.open(options[:path], "wb")
+      file = ::File.open(options[:path], 'wb')
 
       open(res['location']) { |source| IO.copy_stream(source, file) }
       true

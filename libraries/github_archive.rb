@@ -1,10 +1,3 @@
-#
-# Cookbook Name:: github
-# Library:: github_archive
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
 require 'open-uri'
 require 'uri'
 require 'fileutils'
@@ -14,7 +7,7 @@ module GithubCB
   class Archive
     class << self
       def default_host
-        @default_host ||= "https://github.com"
+        @default_host ||= 'https://github.com'
       end
     end
 
@@ -27,7 +20,7 @@ module GithubCB
     def initialize(fqrn, options = {})
       @fqrn                = fqrn
       @organization, @repo = fqrn.split('/')
-      @version             = options[:version] ||= "master"
+      @version             = options[:version] ||= 'master'
       @host                = options[:host] ||= self.class.default_host
     end
 
@@ -40,7 +33,7 @@ module GithubCB
       end
 
       FileUtils.mkdir_p(File.dirname(local_archive_path))
-      file = ::File.open(local_archive_path, "wb")
+      file = ::File.open(local_archive_path, 'wb')
 
       open(download_uri, http_basic_authentication: [options[:user], options[:token]]) do |source|
         IO.copy_stream(source, file)
@@ -92,14 +85,14 @@ module GithubCB
 
     private
 
-      def archive_cache_path
-        File.join(Chef::Config[:file_cache_path], "github_deploy", "archives")
-      end
+    def archive_cache_path
+      File.join(Chef::Config[:file_cache_path], 'github_deploy', 'archives')
+    end
 
-      def download_uri
-        uri      = URI.parse(host)
-        uri.path = "/#{fqrn}/archive/#{URI.encode(version)}.tar.gz"
-        uri
-      end
+    def download_uri
+      uri      = URI.parse(host)
+      uri.path = "/#{fqrn}/archive/#{URI.encode(version)}.tar.gz"
+      uri
+    end
   end
 end

@@ -1,12 +1,3 @@
-#
-# Cookbook Name:: github
-# Provider:: archive
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
-use_inline_resources
-
 attr_reader :archive
 
 def load_current_resource
@@ -15,7 +6,7 @@ end
 
 action :extract do
   recipe_eval do
-    run_context.include_recipe "libarchive::default"
+    run_context.include_recipe 'libarchive::default'
   end
 
   unless !new_resource.force || archive.downloaded?

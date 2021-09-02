@@ -1,18 +1,9 @@
-#
-# Cookbook Name:: github
-# Provider:: deploy
-#
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
-#
-
-use_inline_resources
-
 action :deploy do
   [ new_resource.release_path, new_resource.shared_path ].each do |path|
     directory path do
       owner     new_resource.owner
       group     new_resource.group
-      mode      0770
+      mode      '770'
       recursive true
     end
   end
@@ -21,13 +12,13 @@ action :deploy do
     directory "#{new_resource.shared_path}/#{path}" do
       owner     new_resource.owner
       group     new_resource.group
-      mode      0770
+      mode      '770'
       recursive true
     end
   end
 
   github_archive new_resource.repo do
-    @should_force = new_resource.version == "master" || new_resource.force
+    @should_force = new_resource.version == 'master' || new_resource.force
 
     version      new_resource.version
     github_user  new_resource.github_user
@@ -43,7 +34,7 @@ action :deploy do
     end
   end
 
-  ruby_block "configure" do
+  ruby_block 'configure' do
     block do
       if new_resource.configure
         Chef::Log.info "github_deploy[#{new_resource.name}] Running configure proc"
@@ -52,7 +43,7 @@ action :deploy do
     end
   end
 
-  ruby_block "before-migrate" do
+  ruby_block 'before-migrate' do
     block do
       if new_resource.before_migrate
         Chef::Log.info "github_deploy[#{new_resource.name}] Running before migrate proc"
@@ -61,7 +52,7 @@ action :deploy do
     end
   end
 
-  ruby_block "migrate" do
+  ruby_block 'migrate' do
     block do
       if new_resource.migrate
         Chef::Log.info "github_deploy[#{new_resource.name}] Running migrate proc"
@@ -70,7 +61,7 @@ action :deploy do
     end
   end
 
-  ruby_block "after-migrate" do
+  ruby_block 'after-migrate' do
     block do
       if new_resource.after_migrate
         Chef::Log.info "github_deploy[#{new_resource.name}] Running after migrate proc"
@@ -88,6 +79,6 @@ end
 
 private
 
-  def current_path
-    ::File.join(new_resource.path, "current")
-  end
+def current_path
+  ::File.join(new_resource.path, 'current')
+end

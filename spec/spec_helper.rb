@@ -5,7 +5,7 @@ require 'spork'
 require 'chef'
 
 Spork.prefork do
-  Dir[File.join(File.expand_path("../../spec/support/**/*.rb", __FILE__))].each { |f| require f }
+  Dir[File.join(File.expand_path('../spec/support/**/*.rb', __dir__))].each { |f| require f }
 
   RSpec.configure do |config|
     config.expect_with :rspec do |c|
@@ -18,7 +18,7 @@ Spork.prefork do
     config.run_all_when_everything_filtered = true
 
     config.before(:each) do
-      Chef::Config[:file_cache_path] = File.join(tmp_path, "chef_cache")
+      Chef::Config[:file_cache_path] = File.join(tmp_path, 'chef_cache')
       FileUtils.rm_rf(tmp_path)
       FileUtils.mkdir_p(tmp_path)
       FileUtils.mkdir_p(Chef::Config[:file_cache_path])
@@ -26,7 +26,7 @@ Spork.prefork do
   end
 
   def tmp_path
-    File.expand_path(File.join(File.dirname(__FILE__),"../tmp"))
+    File.expand_path(File.join(File.dirname(__FILE__), '../tmp'))
   end
 end
 
