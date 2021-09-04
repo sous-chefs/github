@@ -9,4 +9,3 @@ issues_url        'https://github.com/sous-chefs/github/issues'
 chef_version      '>= 15.3'
 
 supports 'ubuntu'
-depends 'libarchive'
