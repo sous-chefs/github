@@ -13,7 +13,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-7
+  - name: ubuntu-20.04
 
 suites:
   - name: default
