@@ -6,7 +6,7 @@
 [![OpenCollective](https://opencollective.com/sous-chefs/sponsors/badge.svg)](#sponsors)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A Library Cookbook for interacting with the Github API
+A Library Cookbook for downloading assets, archives or deploying from Github repositories
 
 ## Maintainers
 
@@ -14,29 +14,15 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 
 ## Supported Platforms
 
-* Ubuntu
+* Any chef supported platform
 
-## github_asset Resource/Provider
+## Resources
 
-Downloads an asset from a Github release
+The following resources are provided:
 
-### Actions
-
-* **download** - downloads the asset from the Github releaseto disk. (default)
-
-### Parameter Attributes
-
-* **name** - name of the asset to download (name attribute)
-* **release** - name of the release the asset is a part of
-* **repo** - repository the release is a part of (required for private repositories)
-* **github_token** - Github token to perform the download with (required for private repositories)
-* **owner** - owner of the downloaded asset on disk
-* **group** - group of the downloaded asset on disk
-* **force** - force downloading even if the asset already exists on disk
-
-## HTTP proxy support
-
-Ensure the `HTTPS_PROXY` environment variable is set for the shell executing `chef-client` or `chef-solo`. The value should be a fully qualified URL containing the host, port, username, and password for your proxy.
+* [archive](documentation/archive.md)
+* [asset](documentation/asset.md)
+* [deploy](documentation/deploy.md)
 
 ## Contributors
 
