@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the GitHub cookbook.
 
-## Unreleased
+## 1.0.0 - *2021-09-08*
 
 - Sous-Chefs adoption
 - Migrate to modern custom resources and enable `unified_mode`
