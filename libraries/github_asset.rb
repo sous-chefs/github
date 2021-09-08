@@ -84,7 +84,7 @@ module GithubCB
       FileUtils.mkdir_p(::File.dirname(options[:path]))
       file = ::File.open(options[:path], 'wb')
 
-      open(res['location']) { |source| IO.copy_stream(source, file) }
+      URI.open(res['location']) { |source| IO.copy_stream(source, file) }
       true
     rescue OpenURI::HTTPError => ex
       case ex.message

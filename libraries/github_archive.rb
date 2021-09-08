@@ -35,7 +35,7 @@ module GithubCB
       FileUtils.mkdir_p(File.dirname(local_archive_path))
       file = ::File.open(local_archive_path, 'wb')
 
-      open(download_uri, http_basic_authentication: [options[:user], options[:token]]) do |source|
+      URI.open(download_uri, http_basic_authentication: [options[:user], options[:token]]) do |source|
         IO.copy_stream(source, file)
       end
     rescue OpenURI::HTTPError => ex
@@ -53,34 +53,10 @@ module GithubCB
       File.exist?(local_archive_path)
     end
 
-    # @param [String] target
-    #
-    # @option options [String] :owner
-    # @option options [String] :group
-    def extract(target, options = {})
-      require 'archive'
-
-      if options[:force]
-        FileUtils.rm_rf(target)
-      end
-
-      Dir.mktmpdir do |tmpdir|
-        Dir.chdir(tmpdir) do
-          ::Archive.new(local_archive_path).extract
-        end
-
-        FileUtils.mkdir_p(target)
-        File.rename(Dir.glob("#{tmpdir}/**").first, target)
-      end
-
-      if options[:owner] || options[:group]
-        FileUtils.chown_R(options[:owner], options[:group], target)
-      end
-    end
-
     def local_archive_path
       File.join(archive_cache_path, "#{repo}-#{version}.tar.gz")
     end
+
     alias_method :path, :local_archive_path
 
     private
@@ -91,7 +67,7 @@ module GithubCB
 
     def download_uri
       uri      = URI.parse(host)
-      uri.path = "/#{fqrn}/archive/#{URI.encode(version)}.tar.gz"
+      uri.path = "/#{fqrn}/archive/#{URI.encode_www_form_component(version)}.tar.gz"
       uri
     end
   end
