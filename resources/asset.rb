@@ -2,14 +2,14 @@ unified_mode true
 
 default_action :download
 
-property :file, kind_of: String, name_property: true
-property :release, kind_of: String, required: true
-property :repo, kind_of: String, required: true
-property :github_user, kind_of: String
-property :github_token, kind_of: String
-property :owner, kind_of: String
-property :group, kind_of: String
-property :force, kind_of: [TrueClass, FalseClass], default: false
+property :file, String, name_property: true
+property :release, String, required: true
+property :repo, String, required: true
+property :github_user, String
+property :github_token, String
+property :owner, String
+property :group, String
+property :force, [true, false], default: false
 
 action :download do
   chef_gem 'octokit' do

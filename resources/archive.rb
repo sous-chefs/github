@@ -2,15 +2,15 @@ unified_mode true
 
 default_action :extract
 
-property :repo, kind_of: String, name_property: true
-property :version, kind_of: String, default: 'master'
-property :github_user, kind_of: String
-property :github_token, kind_of: String
-property :host, kind_of: String
-property :owner, kind_of: String
-property :group, kind_of: String
-property :extract_to, kind_of: String, required: true
-property :force, kind_of: [TrueClass, FalseClass], default: false
+property :repo, String, name_property: true
+property :version, String, default: 'master'
+property :github_user, String
+property :github_token, String
+property :host, String
+property :owner, String
+property :group, String
+property :extract_to, String, required: true
+property :force, [true, false], default: false
 
 action :extract do
   unless new_resource.force || archive.downloaded?

@@ -2,21 +2,21 @@ unified_mode true
 
 default_action :deploy
 
-property :repo, kind_of: String, name_property: true
-property :version, kind_of: String, required: true
-property :github_user, kind_of: String
-property :github_token, kind_of: String
-property :host, kind_of: String
-property :path, kind_of: String, required: true
-property :owner, kind_of: String
-property :group, kind_of: String
-property :shared_directories, kind_of: Array, default: %w(pids log)
-property :force, kind_of: [TrueClass, FalseClass], default: false
+property :repo, String, name_property: true
+property :version, String, required: true
+property :github_user, String
+property :github_token, String
+property :host, String
+property :path, String, required: true
+property :owner, String
+property :group, String
+property :shared_directories, Array, default: %w(pids log)
+property :force, [true, false], default: false
 
-property :configure, kind_of: Proc
-property :before_migrate, kind_of: Proc
-property :after_migrate, kind_of: Proc
-property :migrate, kind_of: Proc
+property :configure, Proc
+property :before_migrate, Proc
+property :after_migrate, Proc
+property :migrate, Proc
 
 action_class do
   def deploy_path
