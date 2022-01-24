@@ -3,10 +3,12 @@ cache_dir = inspec.file('/opt/kitchen').exist? ? '/opt/kitchen/cache' : '/tmp/ki
 control 'github-cookbook' do
   [
     "#{cache_dir}/github_assets/elixir-lang/elixir/v1.12.2/Precompiled.zip",
+    "#{cache_dir}/github_assets/elixir-lang/elixir/v1.13.0/Precompiled.zip",
     "#{cache_dir}/github_deploy/archives/elixir-master.tar.gz",
     "#{cache_dir}/github_deploy/archives/elixir-v1.12.tar.gz",
-    '/tmp/test/elixir-master/README.md',
+    '/tmp/test/elixir-main/README.md',
     '/tmp/deploy/releases/v1.12/elixir-1.12/README.md',
+    '/tmp/extract/bin/elixir',
   ].each do |f|
     describe file f do
       it { should exist }
