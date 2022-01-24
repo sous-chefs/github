@@ -10,6 +10,14 @@ github_asset 'Precompiled.zip-delete' do
   action :delete
 end
 
+github_asset 'Precompiled.zip-extract' do
+  file 'Precompiled.zip'
+  repo 'elixir-lang/elixir'
+  release 'v1.13.0'
+  extract_to '/tmp/extract'
+  action :extract
+end
+
 github_archive 'elixir-lang/elixir' do
   extract_to '/tmp/test'
 end

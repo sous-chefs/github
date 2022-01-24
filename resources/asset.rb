@@ -10,20 +10,23 @@ property :github_token, String
 property :owner, String
 property :group, String
 property :force, [true, false], default: false
+property :extract_to, String, required: [:extract]
 
 action :download do
-  chef_gem 'octokit' do
-    compile_time true
-  end
+  do_download
+end
 
-  unless asset.downloaded?(asset_path)
-    converge_by "downloading #{new_resource.file} to #{asset_path}" do
-      asset.download(
-        user: new_resource.github_user,
-        token: new_resource.github_token,
-        force: new_resource.force,
-        path: asset_path
-      )
+action :extract do
+  do_download
+
+  unless new_resource.force || ::File.exist?(new_resource.extract_to)
+    converge_by "extracting #{new_resource.file} to #{new_resource.extract_to}" do
+      archive_file asset_path do
+        destination new_resource.extract_to
+        overwrite new_resource.force
+        owner new_resource.owner
+        group new_resource.group
+      end
     end
   end
 end
@@ -40,6 +43,23 @@ action :delete do
 end
 
 action_class do
+  def do_download
+    chef_gem 'octokit' do
+      compile_time true
+    end
+
+    unless asset.downloaded?(asset_path)
+      converge_by "downloading #{new_resource.file} to #{asset_path}" do
+        asset.download(
+          user: new_resource.github_user,
+          token: new_resource.github_token,
+          force: new_resource.force,
+          path: asset_path
+        )
+      end
+    end
+  end
+
   def asset
     GithubCB::Asset.new(new_resource.repo, name: new_resource.file, release: new_resource.release)
   end
