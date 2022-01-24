@@ -2,6 +2,8 @@
 
 This file is used to list changes made in each version of the GitHub cookbook.
 
+## Unreleased
+
 ## 1.1.0 - *2022-01-24*
 
 - Add :extract action to github_asset resource
