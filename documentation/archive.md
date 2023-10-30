@@ -1,6 +1,6 @@
-[Back to resource list](../README.md#resources)
-
 # github_archive
+
+[Back to resource list](../README.md#resources)
 
 Downloads and extracts an archive from a Github repository
 

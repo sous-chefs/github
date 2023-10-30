@@ -1,6 +1,6 @@
-[Back to resource list](../README.md#resources)
-
 # github_asset
+
+[Back to resource list](../README.md#resources)
 
 Downloads an asset from a Github repository
 
