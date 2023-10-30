@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the GitHub cookbook.
 
 ## Unreleased
 
+## 1.1.8 - *2023-10-26*
+
 ## 1.1.7 - *2023-09-28*
 
 ## 1.1.6 - *2023-09-04*
