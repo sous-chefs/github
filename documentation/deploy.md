@@ -1,6 +1,6 @@
-[Back to resource list](../README.md#resources)
-
 # github_deploy
+
+[Back to resource list](../README.md#resources)
 
 Downloads an asset from a Github repository and then deploys it as an application
 
