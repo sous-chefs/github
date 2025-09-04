@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the GitHub cookbook.
 
-## Unreleased
+## 1.1.16 - *2025-09-04*
 
 ## 1.1.15 - *2024-05-02*
 
