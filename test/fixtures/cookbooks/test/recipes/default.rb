@@ -1,3 +1,7 @@
+apt_update
+
+# frozen_string_literal: true
+
 github_asset 'Precompiled.zip' do
   repo 'elixir-lang/elixir'
   release 'v1.12.2'
