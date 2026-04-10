@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unified_mode true
 
 default_action :extract
