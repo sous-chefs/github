@@ -39,8 +39,8 @@ end
 action :deploy do
   [ release_path, shared_path ].each do |path|
     directory path do
-      owner     new_resource.owner
-      group     new_resource.group
+      owner new_resource.owner
+      group new_resource.group
       mode      '770'
       recursive true
     end
@@ -48,8 +48,8 @@ action :deploy do
 
   new_resource.shared_directories.each do |path|
     directory "#{shared_path}/#{path}" do
-      owner     new_resource.owner
-      group     new_resource.group
+      owner new_resource.owner
+      group new_resource.group
       mode      '770'
       recursive true
     end
