@@ -43,8 +43,14 @@ module GithubCB
         c.access_token = options[:token]
       end
 
-      release = Octokit.releases(fqrn).find do |r|
-        r.tag_name == tag_name
+      page = 1
+      release = nil
+      loop do
+        releases = Octokit.releases(fqrn, per_page: 100, page: page)
+        release = releases.find { |r| r.tag_name == tag_name }
+        break if release || releases.empty?
+
+        page += 1
       end
 
       raise GithubCB::ReleaseNotFound, 'release not found' if release.nil?
