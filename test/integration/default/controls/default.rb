@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 cache_dir = inspec.file('/opt/kitchen').exist? ? '/opt/kitchen/cache' : '/tmp/kitchen/cache'
 
 control 'github-cookbook' do

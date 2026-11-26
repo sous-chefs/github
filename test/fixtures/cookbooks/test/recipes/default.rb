@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+apt_update if platform_family?('debian')
+
 github_asset 'Precompiled.zip' do
   repo 'elixir-lang/elixir'
   release 'v1.12.2'
