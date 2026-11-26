@@ -7,9 +7,15 @@ name: ci
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@5.0.8
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.1
+    with:
+      gems: octokit
     permissions:
       actions: write
       checks: write
@@ -39,12 +45,13 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
-      - name: Install Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@main
+        uses: actions/checkout@v7
+      - name: Install Cinc Workstation
+        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.1
       - name: Dokken
         uses: actionshub/test-kitchen@3.0.0
         env:
+          CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         with:
           suite: ${{ matrix.suite }}

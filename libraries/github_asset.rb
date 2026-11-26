@@ -8,6 +8,15 @@ require_relative 'github_errors'
 
 module GithubCB
   class Asset
+    module JsonSerialization
+      private
+
+      def sawyer_options
+        super.merge(serializer: Sawyer::Serializer.json)
+      end
+    end
+    private_constant :JsonSerialization
+
     class << self
       def asset_cache
         ::File.join(Chef::Config[:file_cache_path], 'github_assets')
@@ -40,13 +49,21 @@ module GithubCB
     def asset_url(options)
       require 'octokit'
 
-      Octokit.configure do |c|
-        c.login        = options[:user]
-        c.access_token = options[:token]
-      end
+      # Some embedded Ruby runtimes expose Yajl without Sawyer's dump/load API.
+      client = Octokit::Client.new(
+        login: options[:user] || false,
+        access_token: options[:token] || false,
+        connection_options: Octokit.connection_options.dup
+      ).extend(JsonSerialization)
 
-      release = Octokit.releases(fqrn).find do |r|
-        r.tag_name == tag_name
+      page = 1
+      release = nil
+      loop do
+        releases = client.releases(fqrn, per_page: 100, page: page)
+        release = releases.find { |r| r.tag_name == tag_name }
+        break if release || releases.empty?
+
+        page += 1
       end
 
       raise GithubCB::ReleaseNotFound, 'release not found' if release.nil?

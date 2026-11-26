@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the GitHub cookbook.
 
+## [1.1.18](https://github.com/sous-chefs/github/compare/v1.1.17...v1.1.18) (2026-11-10)
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#53](https://github.com/sous-chefs/github/issues/53)) ([34368fb](https://github.com/sous-chefs/github/commit/34368fb9112e40e1f17cdcd1e82eaa99f1997b8d))
+
 ## [1.1.17](https://github.com/sous-chefs/github/compare/1.1.16...v1.1.17) (2025-10-15)
 
 
